@@ -1,0 +1,57 @@
+<%= form_with(model: repository, local: true) do |form| %>
+  <% if repository.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(repository.errors.count, "error") %> prohibited this repository from being saved:</h2>
+
+      <ul>
+      <% repository.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name, :disabled=>true %>
+  </div>
+
+  <div class="field">
+    <%= form.label :owner %>
+    <%= form.text_field :owner, :disabled=>true %>
+  </div>
+
+  <div class="field">
+    <%= form.label :description %>
+    <%= form.text_field :description, :disabled=>true, size: 100 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :language %>
+    <%= form.text_field :language, :disabled=>true %>
+  </div>
+
+  <div class="field">
+    <%= form.label :html_url %>
+    <%= form.text_field :html_url, :disabled=>true, size: 100 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :dt_initial %>
+    <%= form.date_select :dtinitial, :disabled=>true %>
+  </div>
+
+  <div class="field">
+    <%= form.label :tags %>
+    <%= form.text_field :tags, size: 100 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :sugestão_para_tag %>
+    <%= form.text_field :tagsuggestion %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Confirmar" %>
+  </div>
+<% end %>

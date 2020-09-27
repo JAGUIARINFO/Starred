@@ -1,0 +1,21 @@
+development:
+  adapter: postgresql
+  database: db_starred_development
+  pool: 5
+  timeout: 5000
+  username: julio
+
+test:
+  adapter: postgresql
+  database: db_starred_test
+  pool: 5
+  timeout: 5000
+  username: julio
+
+production:
+  adapter: postgresql
+  database: db_starred_production
+  pool: 5
+  timeout: 5000
+  username: julio
+

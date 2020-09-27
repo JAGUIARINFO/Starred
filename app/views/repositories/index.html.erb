@@ -1,0 +1,166 @@
+<%= stylesheet_link_tag "application", :media => "all" %>
+<%= javascript_include_tag "application" %> 
+<!DOCTYPE html>
+<html lang="en">
+<body style="background-color:#1C2331;">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Teste de Login</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Google Fonts Roboto -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;display=swap">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- Material Design Bootstrap -->
+    <link rel="stylesheet" href="css/mdb.min.css">
+    <!-- Your custom styles (optional) -->
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+
+  <body>
+
+    <footer class="page-footer font-small unique-color-dark">
+
+      <div style="background-color: #2f83a6; ">
+        <div class="container">
+          <div class="row py-4 d-flex align-items-center">
+
+            <div class="col-md-6 col-lg-5 text-center text-md-left mb-4 mb-md-0">
+              <h5 class="mb-0">Pesquisa GitHub</h5>
+            </div>
+
+            <div class="col-md-6 col-lg-7 text-center text-md-right">
+
+              <!-- LinkedIn -->
+              <a href="https://www.linkedin.com/in/julio-alberto-aguiar/"class="fb-ic">
+                <i class="fab fa-linkedin white-text"> </i>
+              </a>
+              <!-- Hackerrank -->
+              <a href="https://www.hackerrank.com/jaguiarinfo" class="yt-ic">
+                <i class="fab fa-hackerrank white-text">  </i> 
+              </a>
+              <!--Email-->
+              <a href="mailto:julio.a.aguiar@gmail.com"class="ins-ic">
+                <i class="fas fa-envelope white-text"> </i>
+              </a>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="container text-center text-md-left mt-5">
+        <div class="row mt-3">
+          <div class="col-md-5 col-lg-12 mb-4">
+
+
+          <%= form_tag filtrar_path do %>
+            <%= text_field_tag :tofind %>
+          <%= submit_tag "Filtrar Tags" %>
+          <% end %>
+
+          <% if (@user != "") %>
+
+            <% github = Github.new %>
+
+            <% deletar = Repository.delete_all %>
+
+            <% resposta = github.activity.starring.starred user: @user %>
+
+            <% resposta.each do |repo| %>
+
+              <% ano_criacao = repo.created_at[0,4] %>
+              <% ano_criacao = ano_criacao.to_i %>
+              <% if ano_criacao >= 2019 %>
+                <% tag_sugerida = "Muito Novo" %>
+              <% elsif ano_criacao >= 2018 %>
+                <% tag_sugerida = "Novo" %>
+              <% elsif %>
+                <% tag_sugerida = "Antigo" %>
+              <% end %>
+
+              <% incluir = Repository.create(name: repo.name, owner: repo.owner.login, description: repo.description, language: repo.language, html_url: repo.html_url, dtinitial: repo.created_at, tagsuggestion: tag_sugerida ) %>
+
+            <% end %>
+
+          <% end %>
+
+
+          <!-- Editable table -->
+          <div class="card">
+            <h3 class="card-header text-red text-center font-weight-bold text-dark text-uppercase py-4">Pastas Starred pelo Usuário</h3>
+            <div class="card-body">
+              <div id="table">
+                <table class="table table-bordered table-responsive-md table-striped text-center">
+                  <thead>
+                    <tr>
+                    <th>Nome</th>
+                    <th>Owner</th>
+                    <th>Description</th>
+                    <th>Language</th>
+                    <th>Tags</th>
+                    <th>Sugestão para Tag</th>
+                    <th colspan="3"></th>
+                        </tr>
+                  </thead>
+                  <tbody>
+                  <% @repositories.each do |repository| %>
+                    <tr>
+                      <% if repository.tags.nil? %>
+                      <% elsif %>
+                        <% a = repository.tags %>
+                        <% b = a.split(",") %>
+                        <% b = b.uniq %>
+                        <% a = b.join(',') %>
+                      <% end %>
+                      <% repository.tags = a %>
+                      <% repository.save %>
+                      <td><%= repository.name %></td>
+                      <td><%= repository.owner %></td>
+                      <td><%= repository.description %></td>
+                      <td><%= repository.language %></td>
+                      <td><%= repository.tags %></td>
+                      <td><%= repository.tagsuggestion %></td>
+                      <td>
+                      <span class="table-remove"><button type="button"
+                        class="btn btn-light btn-rounded btn-sm my-0"><%= link_to 'Editar', edit_repository_path(repository) %></button></span>
+                    </td>
+                </tr>
+                  <% end %>
+              
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- Editable table -->
+
+
+
+
+          <%= link_to 'Nova Pesquisa', pesquisar_path %>
+
+          </div>
+    
+          </div>
+        
+        </div>
+        
+        <div id="bottom">
+        <div style="background-color: #000000;">
+          <div class="footer text-center py-3"><%= Time.new.strftime("%d/%m/%Y - %H:%M") %> 
+        </div>
+        </div>
+        </div>
+        
+        </footer>
+        
+        </body>
+        
+        </html>
